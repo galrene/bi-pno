@@ -35,7 +35,7 @@ begin
         case STATE is
             when WAIT_1 =>          if BUT_0 = '0' then
                                         NEXT_STATE <= WAIT_1;
-                                    else BUT_0 = '1' then
+                                    else 
                                         NEXT_STATE <= NUM;
                                     end if;
             when NUM =>             NEXT_STATE <= WAIT_2;
@@ -65,7 +65,7 @@ begin
     REG_STATE : process ( CLK )
     begin
         if CLK = '1' and CLK'EVENT then
-            STAV <= DALSI_STAV;
+            STATE <= NEXT_STATE;
         end if;
     end process REG_STATE;
 
