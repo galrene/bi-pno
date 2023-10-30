@@ -49,8 +49,9 @@ begin
     begin
         S_AM <= S_AM_NO_DIR;
         if SH_LEFT = '1' then
-            -- converting to two's complement convert a right shift to a left shift
-            S_AM <= STD_LOGIC_VECTOR ( TO_UNSIGNED ( not S_AM_NO_DIR, 3 ) + 1 );
+            -- converting to two's complement converts a right shift to a left shift
+            S_AM <= STD_LOGIC_VECTOR ( not ( UNSIGNED ( S_AM_NO_DIR ) )
+                                       + 1 );
         end if;
     end process SH_DIR;
 
