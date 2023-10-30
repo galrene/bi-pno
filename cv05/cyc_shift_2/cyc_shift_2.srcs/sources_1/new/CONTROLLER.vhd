@@ -72,4 +72,11 @@ begin
         end case;
     end process TRANSITIONS;
 
+    REG_STATE : process ( CLK )
+    begin
+        if CLK = '1' and CLK'EVENT then
+            STAV <= DALSI_STAV;
+        end if;
+    end process REG_STATE;
+
 end architecture CONTROLLER_BODY;
