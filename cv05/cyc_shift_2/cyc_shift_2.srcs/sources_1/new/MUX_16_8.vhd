@@ -14,12 +14,11 @@ begin
 
     MUX : process ( A, B, SIG )
     begin
-        case SIG is
-            when '0' => 
-                Y <= A;
-            when '1' => 
-                Y <= B;
-        end case;
+        if SIG = '0' then
+            Y <= A;
+        else
+            Y <= B;
+        end if;
     end process MUX;
 
 end architecture MUX_16_8_BODY;
