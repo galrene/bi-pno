@@ -3,13 +3,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 entity DATAPATH is
     port (
-        INPUT    : in STD_LOGIC_VECTOR ( 7 downto 0 );
-        LOAD_NUM : in STD_LOGIC;
-        SH_LEFT  : in STD_LOGIC;
-        LOAD_AM  : in STD_LOGIC;
-        SHIFT    : in STD_LOGIC;
-        OUTPUT   : out STD_LOGIC_VECTOR ( 7 downto 0 );
-        CLK      : in STD_LOGIC
+        INPUT     : in STD_LOGIC_VECTOR ( 7 downto 0 );
+        LOAD_NUM  : in STD_LOGIC;
+        SH_LEFT   : in STD_LOGIC;
+        LOAD_AM   : in STD_LOGIC;
+        SIG_SHIFT : in STD_LOGIC;
+        OUTPUT    : out STD_LOGIC_VECTOR ( 7 downto 0 );
+        CLK       : in STD_LOGIC
         -- COPY_IN : out STD_LOGIC_VECTOR ( 7 downto 0 );
         -- COPY_AM : out STD_LOGIC_VECTOR ( 2 downto 0 );
     );
@@ -58,7 +58,7 @@ begin
     RES_REG : process ( CLK )
     begin
         if CLK = '1' and CLK'EVENT then
-            if SHIFT = '1' then
+            if SIG_SHIFT = '1' then
                 OUTPUT <= S_RES;
             end if;
         end if;
