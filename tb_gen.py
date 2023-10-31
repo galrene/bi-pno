@@ -32,8 +32,10 @@ def gen_shift_dir():
                     print ( i, file=tb_dir )
 
 
-def cyclic_shift(arr, n):
-    return np.roll(arr, n)
+def cyclic_shift(num : int, n):
+    binary_num = '{0:08b}'.format(num)
+    res = np.roll(list(binary_num), n) # tu potrebujem list ktory ma prvok ako binarnu hodnotu
+    return ''.join(res)
 
 
 def gen_exp_outputs():
@@ -42,9 +44,9 @@ def gen_exp_outputs():
             for shift in range ( 8 ):
                 for num in range ( 256 ):
                     if dir == 0:
-                        print ( f"{cyclic_shift(num, -shift):08b}", file=tb_outputs )
+                        print ( cyclic_shift ( num, shift ), file=tb_outputs ) # right shift
                     else:
-                        print ( f"{cyclic_shift(num, shift):08b}", file=tb_outputs )
+                        print ( cyclic_shift ( num, -shift ), file=tb_outputs ) # left shift
                 
 
 def main ():
