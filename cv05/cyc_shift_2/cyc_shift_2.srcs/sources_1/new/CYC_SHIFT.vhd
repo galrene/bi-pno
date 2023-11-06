@@ -35,13 +35,16 @@ architecture CYC_SHIFT_BODY of CYC_SHIFT is
             LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out std_logic
         );
     end component CONTROLLER;
+
+        signal LOAD_NUM_CTRL, LOAD_AM_CTRL, SH_LEFT_CTRL, SHIFT_CTRL : STD_LOGIC;
+
 begin
     DATA_INST : DATAPATH port map (
         INPUT     => INPUT,
-        LOAD_NUM  => LOAD_NUM,
-        SH_LEFT   => SHIFT_LEFT,
-        LOAD_AM   => LOAD_AM,
-        SIG_SHIFT => SIG_SHIFT,
+        LOAD_NUM  => LOAD_NUM_CTRL,
+        SH_LEFT   => SH_LEFT_CTRL,
+        LOAD_AM   => LOAD_AM_CTRL,
+        SIG_SHIFT => SHIFT_CTRL,
         OUTPUT    => OUTPUT,
         CLK       => CLK
     );
@@ -51,9 +54,9 @@ begin
         BUT_1     => BUT_1,
         BUT_2     => BUT_2,
         CLK       => CLK,
-        LOAD_NUM  => LOAD_NUM,
-        LOAD_AM   => LOAD_AM,
-        SH_LEFT   => SH_LEFT,
-        SIG_SHIFT => SIG_SHIFT
+        LOAD_NUM  => LOAD_NUM_CTRL,
+        LOAD_AM   => LOAD_AM_CTRL,
+        SH_LEFT   => SH_LEFT_CTRL,
+        SIG_SHIFT => SHIFT_CTRL
     );
 end architecture CYC_SHIFT_BODY;
