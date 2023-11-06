@@ -5,7 +5,7 @@ entity MUX_16_8 is
         A   : in std_logic_vector ( 7 downto 0 );
         B   : in std_logic_vector ( 7 downto 0 );
         SIG : in std_logic;
-        Y   : out std_logic_vector ( 7 downto 0 );
+        Y   : out std_logic_vector ( 7 downto 0 )
     );
 end entity MUX_16_8;
 
