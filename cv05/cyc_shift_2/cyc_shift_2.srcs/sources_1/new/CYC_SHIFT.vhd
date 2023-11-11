@@ -7,11 +7,13 @@ entity CYC_SHIFT is
         BUT_1    : in  STD_LOGIC;
         BUT_2    : in  STD_LOGIC;
         OUTPUT   : out STD_LOGIC_VECTOR ( 7 downto 0 );
+        CLK      : in  STD_LOGIC;
+        -----------------------------------------------
         COPY_NUM : out STD_LOGIC_VECTOR ( 7 downto 0 );
         COPY_AM  : out STD_LOGIC_VECTOR ( 7 downto 0 );
-        CLK      : in  STD_LOGIC
+        COPY_DIR : out STD_LOGIC 
     ); 
-end CYC_SHIFT;
+end entity CYC_SHIFT;
 
 architecture CYC_SHIFT_BODY of CYC_SHIFT is
     component DATAPATH is
@@ -22,17 +24,19 @@ architecture CYC_SHIFT_BODY of CYC_SHIFT is
             LOAD_AM   : in  STD_LOGIC;
             SIG_SHIFT : in  STD_LOGIC;
             OUTPUT    : out STD_LOGIC_VECTOR ( 7 downto 0 );
-            CLK       : in  STD_LOGIC
-            -- COPY_IN : out STD_LOGIC_VECTOR ( 7 downto 0 );
-            -- COPY_AM : out STD_LOGIC_VECTOR ( 2 downto 0 );
+            CLK       : in  STD_LOGIC;
+            ------------------------------------------------
+            COPY_NUM  : out STD_LOGIC_VECTOR ( 7 downto 0 );
+            COPY_AM   : out STD_LOGIC_VECTOR ( 2 downto 0 );
+            COPY_DIR  : out STD_LOGIC
         );
     end component DATAPATH;
 
     
     component CONTROLLER is
         port (
-            BUT_0, BUT_1, BUT_2, CLK              : in std_logic; 
-            LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out std_logic
+            BUT_0, BUT_1, BUT_2, CLK              : in STD_LOGIC; 
+            LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out STD_LOGIC
         );
     end component CONTROLLER;
 
@@ -46,7 +50,10 @@ begin
         LOAD_AM   => LOAD_AM_CTRL,
         SIG_SHIFT => SHIFT_CTRL,
         OUTPUT    => OUTPUT,
-        CLK       => CLK
+        CLK       => CLK,
+        COPY_NUM  => COPY_NUM,
+        COPY_AM   => COPY_AM,
+        COPY_DIR  => COPY_DIR
     );
 
     CNTR_INST : CONTROLLER port map (
