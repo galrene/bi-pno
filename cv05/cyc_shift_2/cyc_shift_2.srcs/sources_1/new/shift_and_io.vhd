@@ -1,6 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC.ALL;
+use IEEE.NUMERIC_STD.ALL;
 entity SHIFT_AND_IO is
    port (
       SWITCH     : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -46,7 +46,11 @@ architecture SHIFT_AND_IO_BODY of SHIFT_AND_IO is
    signal COPY_NUM          : STD_LOGIC_VECTOR (7 downto 0);   -- input operands copy
    signal COPY_AM           : STD_LOGIC_VECTOR (2 downto 0);    
    signal COPY_DIR          : STD_LOGIC;                       -- direction indicator copy
+   
+   signal ZEROES             : STD_LOGIC_VECTOR ( 7 downto 0 );
 begin
+   ZEROES <= (others => '0');
+   
    SHIFT_INST : CYC_SHIFT port map (
                   INPUT    => SWITCH,
                   BUT_0    => BUT_0,
@@ -67,13 +71,14 @@ begin
                   DIGIT    => DIGIT
                );
     
+    
    -- BTN3 switches between output or original input operands (number shift, shift direction, shift amount)
-   DISPLAY_MUX : process (BUT_3, OUTPUT, COPY_NUM, COPY_AM, COPY_DIR)
+   DISPLAY_MUX : process (BUT_3, OUTPUT, COPY_NUM, COPY_AM, COPY_DIR, ZEROES)
    begin
       if BUT_3 = '0' then
-         DATA <= (15 downto 7 => OUTPUT, others => '0' );
+         DATA <= ZEROES & OUTPUT;
       else
-         DATA <= (COPY_NUM & COPY_DIR & COPY_AM);
+         DATA <= ("0000" & COPY_NUM & COPY_DIR & COPY_AM);
       end if; 
    end process DISPLAY_MUX;
 
