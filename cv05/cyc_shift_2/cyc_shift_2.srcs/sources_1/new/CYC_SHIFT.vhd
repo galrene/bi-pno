@@ -10,7 +10,7 @@ entity CYC_SHIFT is
         CLK      : in  STD_LOGIC;
         -----------------------------------------------
         COPY_NUM : out STD_LOGIC_VECTOR ( 7 downto 0 );
-        COPY_AM  : out STD_LOGIC_VECTOR ( 7 downto 0 );
+        COPY_AM  : out STD_LOGIC_VECTOR ( 2 downto 0 );
         COPY_DIR : out STD_LOGIC 
     ); 
 end entity CYC_SHIFT;
