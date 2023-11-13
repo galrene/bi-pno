@@ -63,11 +63,9 @@ begin
    -- reset generator?
 
    STIMULI_GEN : process
-      file     NUMBER   : TEXT is in "/home/galrene/school/pno/gen_input_num.txt";
-      file     DIR      : TEXT is in "/home/galrene/school/pno/gen_input_sh_dir.txt";
-      file     AMOUNT   : TEXT is in "/home/galrene/school/pno/gen_input_sh_am.txt";
-      file     RESULT   : TEXT is in "/home/galrene/school/pno/gen_exp_output.txt";
-      variable NUMBER_LINE, DIR_LINE, AMOUNT_LINE, RESULT_LINE : LINE;
+      file     INPUTS   : TEXT is in "/home/galrene/school/pno/gen_input.txt";
+      file     RESULTS   : TEXT is in "/home/galrene/school/pno/gen_exp_output.txt";
+      variable INPUT_LINE, RESULT_LINE : LINE;
 
       variable NUMBER_BV, RESULT_BV : BIT_VECTOR ( 7 downto 0 );
       variable AMOUNT_BV            : BIT_VECTOR ( 2 downto 0 );
@@ -82,16 +80,18 @@ begin
     TB_BUT_2 <= '0';
     wait for 33 ns;
 
-    while not ENDFILE(DIR) loop
+    assert FALSE
+           report "-----BEGIN SIMULATION-----"
+           severity note;
+
+    while not ENDFILE(INPUTS) loop
         
         wait until TB_CLK = '1';
-        readline(NUMBER, NUMBER_LINE);
-        readline(DIR, DIR_LINE);
-        readline(AMOUNT, AMOUNT_LINE);
-        readline(RESULT, RESULT_LINE);
-        read(NUMBER_LINE, NUMBER_BV);
-        read(DIR_LINE, DIR_BV);
-        read(AMOUNT_LINE, AMOUNT_BV);
+        readline(INPUTS, INPUT_LINE);
+        readline(RESULTS, RESULT_LINE);
+        read(INPUT_LINE, NUMBER_BV);
+        read(INPUT_LINE, DIR_BV);
+        read(INPUT_LINE, AMOUNT_BV);
         read(RESULT_LINE, RESULT_BV);
         NUMBER_VEC          := To_StdLogicVector(NUMBER_BV);
         DIR_VEC             := To_StdLogicVector(DIR_BV);
@@ -127,10 +127,10 @@ begin
         wait for 10*CLK_PERIOD;
         
         assert TB_OUTPUT = RESULT_VEC
-            report "ERROR: Inputs: "
-            & integer'image(TO_INTEGER(UNSIGNED(NUMBER_VEC)))
-            & integer'image(TO_INTEGER(UNSIGNED(DIR_VEC)))
-            & integer'image(TO_INTEGER(UNSIGNED(AMOUNT_VEC)))
+            report
+              "N:" & integer'image(TO_INTEGER(UNSIGNED(NUMBER_VEC)))
+            & "D:" & integer'image(TO_INTEGER(UNSIGNED(DIR_VEC)))
+            & "A:" & integer'image(TO_INTEGER(UNSIGNED(AMOUNT_VEC)))
             & ", Output: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT)))
             &"; Expected: " & integer'image(TO_INTEGER(UNSIGNED(RESULT_VEC)))
             severity error;
@@ -138,7 +138,7 @@ begin
     end loop;
 
     assert FALSE
-           report "END OF SIMULATION"
+           report "-----END OF SIMULATION-----"
            severity failure;
 
    end process STIMULI_GEN;
