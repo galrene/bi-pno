@@ -32,7 +32,7 @@ architecture TB_CYC_SHIFT_BODY of TB_CYC_SHIFT is
     signal TB_BUT_2      :  STD_LOGIC;
     signal TB_OUTPUT     :  STD_LOGIC_VECTOR (7 downto 0);   -- result
     signal TB_COPY_NUM   :  STD_LOGIC_VECTOR (7 downto 0);   -- copy of number to shift
-    signal TB_COPY_AM    :  STD_LOGIC_VECTOR (7 downto 0);   -- copy of shift amount
+    signal TB_COPY_AM    :  STD_LOGIC_VECTOR (2 downto 0);   -- copy of shift amount
     signal TB_COPY_DIR   :  STD_LOGIC; -- shift direction
     signal TB_CLK        :  STD_LOGIC;
     
@@ -108,7 +108,7 @@ begin
         wait for 55 ns;
         
         -- input the shift amount
-        TB_INPUT <= AMOUNT_VEC;
+        TB_INPUT <= "00000" & AMOUNT_VEC;
       
         wait for 50 ns;
         
