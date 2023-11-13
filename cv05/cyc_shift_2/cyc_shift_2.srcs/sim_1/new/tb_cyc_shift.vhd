@@ -67,8 +67,7 @@ begin
       file     DIR      : TEXT is in "/home/galrene/school/pno/gen_input_sh_dir.txt";
       file     AMOUNT   : TEXT is in "/home/galrene/school/pno/gen_input_sh_am.txt";
       file     RESULT   : TEXT is in "/home/galrene/school/pno/gen_exp_output.txt";
-      variable NUMBER_LINE, DIR_LINE,
-               AMOUNT_LINE, RESULT_LINE : LINE;
+      variable NUMBER_LINE, DIR_LINE, AMOUNT_LINE, RESULT_LINE : LINE;
 
       variable NUMBER_BV, RESULT_BV : BIT_VECTOR ( 7 downto 0 );
       variable AMOUNT_BV            : BIT_VECTOR ( 2 downto 0 );
@@ -89,6 +88,7 @@ begin
         readline(NUMBER, NUMBER_LINE);
         readline(DIR, DIR_LINE);
         readline(AMOUNT, AMOUNT_LINE);
+        readline(RESULT, RESULT_LINE);
         read(NUMBER_LINE, NUMBER_BV);
         read(DIR_LINE, DIR_BV);
         read(AMOUNT_LINE, AMOUNT_BV);
