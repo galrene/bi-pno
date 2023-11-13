@@ -19,7 +19,15 @@ entity DATAPATH is
 end entity DATAPATH;
 
 architecture DATAPATH_BODY of DATAPATH is
-
+    
+    component BARREL_SHIFTER is
+        port (
+            S_NUM : in  STD_LOGIC_VECTOR ( 7 downto 0 );
+            S_AM  : in  STD_LOGIC_VECTOR ( 2 downto 0 ); -- shift amount
+            S_RES : out STD_LOGIC_VECTOR ( 7 downto 0 )
+        );
+    end component BARREL_SHIFTER;    
+    
     signal NUM                 : STD_LOGIC_VECTOR ( 7 downto 0 );
     signal SH_AMOUNT           : STD_LOGIC_VECTOR ( 2 downto 0 );
     signal SH_AMOUNT_NO_DIR    : STD_LOGIC_VECTOR ( 2 downto 0 ); -- raw SH_AMOUNT before deciding which direction to shift in  
@@ -52,7 +60,7 @@ begin
     end process SH_AM_REG;
     
     -- process deciding shift direction
-    SH_DIR : process ( SH_AMOUNT_NO_DIR )
+    SH_DIR : process ( SH_AMOUNT_NO_DIR, SH_LEFT )
     begin
         SH_AMOUNT <= SH_AMOUNT_NO_DIR;
         COPY_DIR <= '0';
@@ -64,7 +72,14 @@ begin
         end if;
     end process SH_DIR;
 
+    -- barrel shifter
+    BAR : BARREL_SHIFTER port map (
+        S_NUM => NUM,
+        S_AM  => SH_AMOUNT,
+        S_RES => RES
+    );
     
+    -- register storing the shift result    
     RES_REG : process ( CLK )
     begin
         if CLK = '1' and CLK'EVENT then
