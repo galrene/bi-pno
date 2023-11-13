@@ -5,7 +5,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use STD.TEXTIO.all;                                        -- pro datovy typ FILE a praci s nim
+use STD.TEXTIO.all;                                        -- for the FILE data type and related operations
 
 entity TB_CYC_SHIFT is
 end entity TB_CYC_SHIFT;
@@ -30,7 +30,7 @@ architecture TB_CYC_SHIFT_BODY of TB_CYC_SHIFT is
     signal TB_BUT_0      :  STD_LOGIC;
     signal TB_BUT_1      :  STD_LOGIC;
     signal TB_BUT_2      :  STD_LOGIC;
-    signal TB_OUTPUT     :  STD_LOGIC_VECTOR (7 downto 0);  -- result
+    signal TB_OUTPUT     :  STD_LOGIC_VECTOR (7 downto 0);   -- result
     signal TB_COPY_NUM   :  STD_LOGIC_VECTOR (7 downto 0);   -- copy of number to shift
     signal TB_COPY_AM    :  STD_LOGIC_VECTOR (7 downto 0);   -- copy of shift amount
     signal TB_COPY_DIR   :  STD_LOGIC; -- shift direction
