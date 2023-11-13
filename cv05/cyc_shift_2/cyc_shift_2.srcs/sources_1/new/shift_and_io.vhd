@@ -47,9 +47,8 @@ architecture SHIFT_AND_IO_BODY of SHIFT_AND_IO is
    signal COPY_AM           : STD_LOGIC_VECTOR (2 downto 0);    
    signal COPY_DIR          : STD_LOGIC;                       -- direction indicator copy
    
-   signal ZEROES             : STD_LOGIC_VECTOR ( 7 downto 0 );
+   signal ZEROES             : STD_LOGIC_VECTOR ( 7 downto 0 ); -- i couldn't figure out the vhdl syntax
 begin
-   ZEROES <= (others => '0');
    
    SHIFT_INST : CYC_SHIFT port map (
                   INPUT    => SWITCH,
@@ -71,7 +70,8 @@ begin
                   DIGIT    => DIGIT
                );
     
-    
+   
+   ZEROES <= (others => '0');
    -- BTN3 switches between output or original input operands (number shift, shift direction, shift amount)
    DISPLAY_MUX : process (BUT_3, OUTPUT, COPY_NUM, COPY_AM, COPY_DIR, ZEROES)
    begin
