@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC.ALL;
 entity SHIFT_AND_IO is
    port (
       SWITCH     : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -25,14 +26,14 @@ architecture SHIFT_AND_IO_BODY of SHIFT_AND_IO is
             CLK      : in  STD_LOGIC;
             -----------------------------------------------
             COPY_NUM : out STD_LOGIC_VECTOR ( 7 downto 0 );
-            COPY_AM  : out STD_LOGIC_VECTOR ( 7 downto 0 );
+            COPY_AM  : out STD_LOGIC_VECTOR ( 2 downto 0 );
             COPY_DIR : out STD_LOGIC 
         ); 
     end component CYC_SHIFT;
     
    component HEX2SEG is
       port (
-         DATA     : in  STD_LOGIC_VECTOR (11 downto 0);   -- input data for display ( NUM(8), SHIFT_DIR(1), SHIFT_AM(3) ) 
+         DATA     : in  STD_LOGIC_VECTOR (15 downto 0);   -- input data for display ( NUM(8), SHIFT_DIR(1), SHIFT_AM(3) ) 
          CLK      : in  STD_LOGIC;
          SEGMENT  : out STD_LOGIC_VECTOR (6 downto 0);    -- 7 segments of the display
          DP       : out STD_LOGIC;                        -- floating point
@@ -40,8 +41,10 @@ architecture SHIFT_AND_IO_BODY of SHIFT_AND_IO is
       );
    end component HEX2SEG;
    -- signals --
-   signal OUTPUT, DATA      : STD_LOGIC_VECTOR (15 downto 0);  -- result, display data
-   signal COPY_NUM, COPY_AM : STD_LOGIC_VECTOR (7 downto 0);   -- input operands copy 
+   signal OUTPUT            : STD_LOGIC_VECTOR (7 downto 0);
+   signal DATA              : STD_LOGIC_VECTOR (15 downto 0);  -- result, display data
+   signal COPY_NUM          : STD_LOGIC_VECTOR (7 downto 0);   -- input operands copy
+   signal COPY_AM           : STD_LOGIC_VECTOR (2 downto 0);    
    signal COPY_DIR          : STD_LOGIC;                       -- direction indicator copy
 begin
    SHIFT_INST : CYC_SHIFT port map (
@@ -65,10 +68,10 @@ begin
                );
     
    -- BTN3 switches between output or original input operands (number shift, shift direction, shift amount)
-   DISPLAY_MUX : process (BTN3, OUTPUT, COPY_NUM, COPY_AM, COPY_DIR)
+   DISPLAY_MUX : process (BUT_3, OUTPUT, COPY_NUM, COPY_AM, COPY_DIR)
    begin
-      if BTN3 = '0' then
-         DATA <= OUTPUT;
+      if BUT_3 = '0' then
+         DATA <= (15 downto 7 => OUTPUT, others => '0' );
       else
          DATA <= (COPY_NUM & COPY_DIR & COPY_AM);
       end if; 
