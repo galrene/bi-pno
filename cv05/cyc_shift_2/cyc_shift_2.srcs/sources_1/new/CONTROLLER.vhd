@@ -3,7 +3,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity CONTROLLER is
     port (
         BUT_0, BUT_1, BUT_2, CLK              : in std_logic; 
-        LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out std_logic
+        LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out std_logic;
+        RESET                                 : in std_logic; -- externally activated reset
+        RESET_DATAPATH                        : out std_logic -- internal reset
     );
 end entity CONTROLLER;
 
@@ -17,16 +19,16 @@ begin
         LOAD_AM   <= '0';
         SH_LEFT   <= '0';
         SIG_SHIFT <= '0';
+        RESET_DATAPATH <= '0';
         case STATE is
-            when WAIT_1 =>          null;
-            when NUM    =>          LOAD_NUM  <= '1';
-            when WAIT_2 =>          null;
-            when AMOUNT =>          LOAD_AM   <= '1';
-            when AMOUNT_AND_LEFT =>
-                                    LOAD_AM   <= '1';
-                                    SH_LEFT   <= '1';
-            when SHIFT =>
-                                    SIG_SHIFT <= '1';
+            when WAIT_1          => null;
+            when NUM             => LOAD_NUM       <= '1';
+                                    RESET_DATAPATH <= '1';
+            when WAIT_2          => null;
+            when AMOUNT          => LOAD_AM        <= '1';
+            when AMOUNT_AND_LEFT => LOAD_AM        <= '1';
+                                    SH_LEFT        <= '1';
+            when SHIFT           => SIG_SHIFT      <= '1';
         end case;
     end process OUTPUTS;
     
@@ -65,7 +67,11 @@ begin
     REG_STATE : process ( CLK )
     begin
         if CLK = '1' and CLK'EVENT then
-            STATE <= NEXT_STATE;
+            if RESET = '1' then
+                STATE <= WAIT_1;
+            else
+                STATE <= NEXT_STATE;
+            end if;
         end if;
     end process REG_STATE;
 

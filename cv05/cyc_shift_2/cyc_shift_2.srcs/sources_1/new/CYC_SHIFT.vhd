@@ -8,6 +8,7 @@ entity CYC_SHIFT is
         BUT_2    : in  STD_LOGIC;
         OUTPUT   : out STD_LOGIC_VECTOR ( 7 downto 0 );
         CLK      : in  STD_LOGIC;
+        RESET    : in  STD_LOGIC;
         -----------------------------------------------
         COPY_NUM : out STD_LOGIC_VECTOR ( 7 downto 0 );
         COPY_AM  : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -25,6 +26,7 @@ architecture CYC_SHIFT_BODY of CYC_SHIFT is
             SIG_SHIFT : in  STD_LOGIC;
             OUTPUT    : out STD_LOGIC_VECTOR ( 7 downto 0 );
             CLK       : in  STD_LOGIC;
+            RESET     : in  STD_LOGIC;
             ------------------------------------------------
             COPY_NUM  : out STD_LOGIC_VECTOR ( 7 downto 0 );
             COPY_AM   : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -36,12 +38,14 @@ architecture CYC_SHIFT_BODY of CYC_SHIFT is
     component CONTROLLER is
         port (
             BUT_0, BUT_1, BUT_2, CLK              : in STD_LOGIC; 
-            LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out STD_LOGIC
+            LOAD_NUM, LOAD_AM, SH_LEFT, SIG_SHIFT : out STD_LOGIC;
+            RESET                                 : in STD_LOGIC;
+            RESET_DATAPATH                        : out STD_LOGIC
         );
     end component CONTROLLER;
 
         signal LOAD_NUM_CTRL, LOAD_AM_CTRL, SH_LEFT_CTRL, SHIFT_CTRL : STD_LOGIC;
-
+        signal RESET_DATAPATH : STD_LOGIC;
 begin
     DATA_INST : DATAPATH port map (
         INPUT     => INPUT,
@@ -53,7 +57,8 @@ begin
         CLK       => CLK,
         COPY_NUM  => COPY_NUM,
         COPY_AM   => COPY_AM,
-        COPY_DIR  => COPY_DIR
+        COPY_DIR  => COPY_DIR,
+        RESET     => RESET_DATAPATH
     );
 
     CNTR_INST : CONTROLLER port map (
@@ -64,6 +69,8 @@ begin
         LOAD_NUM  => LOAD_NUM_CTRL,
         LOAD_AM   => LOAD_AM_CTRL,
         SH_LEFT   => SH_LEFT_CTRL,
-        SIG_SHIFT => SHIFT_CTRL
+        SIG_SHIFT => SHIFT_CTRL,
+        RESET     => RESET,
+        RESET_DATAPATH => RESET_DATAPATH
     );
 end architecture CYC_SHIFT_BODY;

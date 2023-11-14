@@ -19,6 +19,7 @@ architecture TB_CYC_SHIFT_BODY of TB_CYC_SHIFT is
             BUT_2    : in  STD_LOGIC;
             OUTPUT   : out STD_LOGIC_VECTOR ( 7 downto 0 );
             CLK      : in  STD_LOGIC;
+            RESET    : in  STD_LOGIC;
             -----------------------------------------------
             COPY_NUM : out STD_LOGIC_VECTOR ( 7 downto 0 );
             COPY_AM  : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -35,6 +36,7 @@ architecture TB_CYC_SHIFT_BODY of TB_CYC_SHIFT is
     signal TB_COPY_AM    :  STD_LOGIC_VECTOR (2 downto 0);   -- copy of shift amount
     signal TB_COPY_DIR   :  STD_LOGIC; -- shift direction
     signal TB_CLK        :  STD_LOGIC;
+    signal TB_RESET      :  STD_LOGIC;
     
     constant CLK_PERIOD : time := 10 ns;
 begin
@@ -48,7 +50,8 @@ begin
         COPY_NUM => TB_COPY_NUM,
         COPY_AM  => TB_COPY_AM,
         COPY_DIR => TB_COPY_DIR,
-        CLK      => TB_CLK
+        CLK      => TB_CLK,
+        RESET    => TB_RESET
     );
 
     -- clock generator
@@ -60,7 +63,17 @@ begin
       wait for CLK_PERIOD / 2;
    end process CLK_GEN;
 
-   -- reset generator?
+   -- reset generator
+   RESET_GEN : process
+   begin
+      wait for 30 ns;
+      TB_RESET <= '0';   
+      wait for 30 ns;
+      TB_RESET <= '1';   
+      wait for 30 ns;
+      TB_RESET <= '0';
+      wait;
+   end process;  
 
    STIMULI_GEN : process
       file     INPUTS   : TEXT is in "/home/galrene/school/pno/gen_input.txt";
@@ -75,9 +88,11 @@ begin
       variable AMOUNT_VEC             : STD_LOGIC_VECTOR ( 2 downto 0 );
       variable DIR_VEC                : STD_LOGIC_VECTOR ( 0 downto 0 );
    begin
+    wait until TB_RESET = '1';
     TB_BUT_0 <= '0';
     TB_BUT_1 <= '0';
     TB_BUT_2 <= '0';
+    wait until TB_RESET = '0';
     wait for 33 ns;
 
     assert FALSE

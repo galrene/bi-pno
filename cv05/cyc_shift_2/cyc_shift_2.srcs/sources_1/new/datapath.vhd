@@ -10,6 +10,7 @@ entity DATAPATH is
         SIG_SHIFT : in  STD_LOGIC;
         OUTPUT    : out STD_LOGIC_VECTOR ( 7 downto 0 );
         CLK       : in  STD_LOGIC;
+        RESET     : in  STD_LOGIC;
         ------------------------------------------------
         COPY_NUM   : out STD_LOGIC_VECTOR ( 7 downto 0 );
         COPY_AM    : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -83,7 +84,9 @@ begin
     RES_REG : process ( CLK )
     begin
         if CLK = '1' and CLK'EVENT then
-            if SIG_SHIFT = '1' then
+            if RESET = '1' then
+                OUTPUT <= ( others => '0' );
+                elsif SIG_SHIFT = '1' then
                 OUTPUT <= RES;
             end if;
         end if;

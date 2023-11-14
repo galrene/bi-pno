@@ -11,7 +11,8 @@ entity SHIFT_AND_IO is
       SEGMENT    : out STD_LOGIC_VECTOR (6 downto 0);    -- 7 segments of the display
       DP         : out STD_LOGIC;                        -- floating point
       DIGIT      : out STD_LOGIC_VECTOR (3 downto 0);    -- 4 digits of the display
-      CLK        : in  STD_LOGIC
+      CLK        : in  STD_LOGIC;
+      RESET      : in  STD_LOGIC
    );
 end entity SHIFT_AND_IO;
 
@@ -24,6 +25,7 @@ architecture SHIFT_AND_IO_BODY of SHIFT_AND_IO is
             BUT_2    : in  STD_LOGIC;
             OUTPUT   : out STD_LOGIC_VECTOR ( 7 downto 0 );
             CLK      : in  STD_LOGIC;
+            RESET    : in  STD_LOGIC;
             -----------------------------------------------
             COPY_NUM : out STD_LOGIC_VECTOR ( 7 downto 0 );
             COPY_AM  : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -59,7 +61,8 @@ begin
                   COPY_NUM => COPY_NUM,
                   COPY_AM  => COPY_AM,
                   COPY_DIR => COPY_DIR,
-                  CLK      => CLK
+                  CLK      => CLK,
+                  RESET    => RESET
                 );
    
    DISP_INST : HEX2SEG port map (
