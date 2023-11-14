@@ -1,0 +1,42 @@
+= Projekt 1: Úloha 1 - Cyklický posouvač vlevo a vpravo II.
+
+=== Implementační platforma
+
+Přípravek Digilent Basys 3.
+
+
+=== Popis chování
+
+V klidovém stavu obvod čeká na zadání 8-bitového operandu A pomocí přepínačů SWITCH(7:0). Operand je načten při stisku tlačítka BTN0. Následně obvod očekává délku posunu L (3-bitové číslo bez znaménka) zadanou na SWITCH(2:0). Při stisku BTN1 je hodnota SWITCH(2:0) chápána jako délka posuvu vpravo, při stisku BTN2 je chápána jako délka posuvu vlevo. Následně je proveden příslušný posun a výsledek C je zobrazen na sedmisegmetovém displeji. Při stisku (a podržení) tlačítka BTN3 se na tomtéž sedmisegmentovém displeji zobrazí operand A a délka posuvu L. Směr posuvu je indikován diodou LD0.
+
+
+=== Blokové schéma datové cesty
+
+
+image::./pno_projects_submissions/cyc_shift_2/shift_datapath.png[width="500"]
+
+
+=== Graf přechodů a výstupů řadiče
+
+image::./pno_projects_submissions/cyc_shift_2/shift_controller.png[width="500"]
+
+=== Archiv se soubory
+
+link:./pno_projects_submissions/hw01_cyc_shift_galrene.zip[Projekt1.1-Cyklicky_posuv.zip]
+
+=== Popis souborů
+
+
+[options="autowidth"]
+|====
+^h|  Soubor                                                                ^h|  Popis
+| link:./pno_projects_submissions/cyc_shift_2/datapath.vhd[datapath.vhd]                          | datová cesta
+| link:./pno_projects_submissions/cyc_shift_2/controller.vhd[controller.vhd]                      | řídící jednotka
+| link:./pno_projects_submissions/cyc_shift_2/cyc_shift.vhd[cyc_shift.vhd]        | top-level entita (pro verifikaci)
+| link:./pno_projects_submissions/cyc_shift_2/tb_cyc_shift.vhd[tb_cyc_shift.vhd]            | testbench - stimuly a kontrolní výsledky jsou v externích souborech
+| link:./pno_projects_submissions/cyc_shift_2/gen_input.txt[gen_input.txt], link:./pno_projects_submissions/cyc_shift_2/gen_exp_output.txt[gen_exp_output.txt]         | soubory se stimuly a správnými výsledky pro testbench výše
+| link:./pno_projects_submissions/cyc_shift_2/hex2seg.vhd[hex2seg.vhd]                            | převodník na sedmisegmentovky
+| link:./pno_projects_submissions/cyc_shift_2/shift_and_io.vhd[shift_and_io.vhd]        | top-level entita + displej (pro validaci - nahrání do přípravku)
+| link:./pno_projects_submissions/cyc_shift_2/constrs.xdc[constrs.xdc]                     | přiřazení pinů
+| link:./pno_projects_submissions/cyc_shift_2/tb_gen.py[tb_gen.py]               | generátor vstupů a výstupů (pro testbench)
+|====
