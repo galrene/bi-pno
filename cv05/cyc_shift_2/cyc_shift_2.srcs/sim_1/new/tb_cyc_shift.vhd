@@ -100,9 +100,9 @@ begin
 
         -- input the number to be shifted
         TB_INPUT <= NUMBER_VEC;
-        wait for 50 ns;
+        wait for 23 ns;
         TB_BUT_0 <= '1';
-        wait for 50 ns;
+        wait for 33 ns;
         TB_BUT_0 <= '0';
 
         wait for 55 ns;
@@ -110,16 +110,17 @@ begin
         -- input the shift amount
         TB_INPUT <= "00000" & AMOUNT_VEC;
       
-        wait for 50 ns;
+        wait for 23 ns;
         
         -- choose shift direction
-        if DIR_VEC(0) = '1' then
+        -- if shift right, press but_1, else press but_2
+        if DIR_VEC(0) = '0' then 
             TB_BUT_1 <= '1';
-            wait for 50 ns;
+            wait for 33 ns;
             TB_BUT_1 <= '0';
         else
             TB_BUT_2 <= '1';
-            wait for 50 ns;
+            wait for 33 ns;
             TB_BUT_2 <= '0';
         end if;
         
@@ -128,10 +129,10 @@ begin
         
         assert TB_OUTPUT = RESULT_VEC
             report
-              "N:" & integer'image(TO_INTEGER(UNSIGNED(NUMBER_VEC)))
-            & "D:" & integer'image(TO_INTEGER(UNSIGNED(DIR_VEC)))
-            & "A:" & integer'image(TO_INTEGER(UNSIGNED(AMOUNT_VEC)))
-            & ", Output: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT)))
+              "N(" & integer'image(TO_INTEGER(UNSIGNED(NUMBER_VEC)))
+            & ")D(" & integer'image(TO_INTEGER(UNSIGNED(DIR_VEC)))
+            & ")A(" & integer'image(TO_INTEGER(UNSIGNED(AMOUNT_VEC)))
+            & "), Output: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT)))
             &"; Expected: " & integer'image(TO_INTEGER(UNSIGNED(RESULT_VEC)))
             severity error;
 
