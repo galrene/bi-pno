@@ -31,7 +31,6 @@ architecture DATAPATH_BODY of DATAPATH is
     
     signal NUM                 : STD_LOGIC_VECTOR ( 7 downto 0 );
     signal SH_AMOUNT           : STD_LOGIC_VECTOR ( 2 downto 0 );
-    signal SH_AMOUNT_NO_DIR    : STD_LOGIC_VECTOR ( 2 downto 0 ); -- raw SH_AMOUNT before deciding which direction to shift in  
     signal RES                 : STD_LOGIC_VECTOR ( 7 downto 0 );
 
 begin
@@ -52,26 +51,19 @@ begin
     SH_AM_REG : process ( CLK )
     begin
         if CLK = '1' and CLK'EVENT then
-            if LOAD_AM = '1' then
-                SH_AMOUNT_NO_DIR <= INPUT ( 2 downto 0 );
+            COPY_AM <= INPUT ( 2 downto 0 );
+            if LOAD_AM = '1' and SH_LEFT = '1' then
+                -- converting to two's complement converts a right shift to a left shift
+                SH_AMOUNT <= STD_LOGIC_VECTOR ( UNSIGNED ( not INPUT ( 2 downto 0 ) ) + 1 );
                 ---
-                COPY_AM <= INPUT ( 2 downto 0 );
+                COPY_DIR <= '1';
+            elsif LOAD_AM = '1' and SH_LEFT = '0' then
+                SH_AMOUNT <= INPUT ( 2 downto 0 );
+                ---
+                COPY_DIR <= '0';
             end if;
         end if;
     end process SH_AM_REG;
-    
-    -- process deciding shift direction
-    SH_DIR : process ( SH_AMOUNT_NO_DIR, SH_LEFT )
-    begin
-        SH_AMOUNT <= SH_AMOUNT_NO_DIR;
-        COPY_DIR <= '0';
-        if SH_LEFT = '1' then
-            -- converting to two's complement converts a right shift to a left shift
-            SH_AMOUNT <= STD_LOGIC_VECTOR ( UNSIGNED ( not SH_AMOUNT_NO_DIR ) +  1 );
-            ---
-            COPY_DIR <= '1'; 
-        end if;
-    end process SH_DIR;
 
     -- barrel shifter
     BAR : BARREL_SHIFTER port map (
