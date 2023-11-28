@@ -82,14 +82,15 @@ begin
         assert FALSE
             report "-----BEGIN SIMULATION-----"
             severity note;
-
-        for A in 0 to 255 loop
-            for B in 0 to 255 loop
+        
+        -- generate input values for VGA
+        for X in 0 to 255 loop
+            for Y in 0 to 255 loop
                 wait until TB_CLK = '1';
                 
-                TB_REGX <= std_logic_vector(to_unsigned(A, 8));
+                TB_REGX <= std_logic_vector(to_unsigned(X, 8));
                 wait for 30 ns;
-                TB_REGY <= std_logic_vector(to_unsigned(B, 8));
+                TB_REGY <= std_logic_vector(to_unsigned(Y, 8));
                 wait for 10*CLK_PERIOD;
 
                 -- assert all VGA signals
