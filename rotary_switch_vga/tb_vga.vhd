@@ -20,17 +20,37 @@ architecture TB_VGA_BODY of TB_VGA is
            RESET     : in  std_logic
         );
     end component VGA;
+    -- architecture SOFTWARE_MODEL contains the golden standard
+    for GOLDEN : VGA use entity work.VGA(SOFTWARE_MODEL) port map (
+        REGX        => REGX,
+        REGY        => REGY,
+        VGA_RED     => VGA_RED,
+        VGA_GREEN   => VGA_GREEN,
+        VGA_BLUE    => VGA_BLUE,
+        VGA_HSYNC   => VGA_HSYNC,
+        VGA_VSYNC   => VGA_VSYNC,
+        CLK         => CLK,
+        RESET       => RESET
+    );
 
     -- signals
-    signal TB_REGX      : std_logic_vector (7 downto 0);
-    signal TB_REGY      : std_logic_vector (7 downto 0);
-    signal TB_VGA_RED   : std_logic;
-    signal TB_VGA_GREEN : std_logic;
-    signal TB_VGA_BLUE  : std_logic;
-    signal TB_VGA_HSYNC : std_logic;
-    signal TB_VGA_VSYNC : std_logic;
-    signal TB_CLK       : std_logic;
-    signal TB_RESET     : std_logic;
+    signal TB_REGX              : std_logic_vector (7 downto 0);
+    signal TB_REGY              : std_logic_vector (7 downto 0);
+    
+    signal TB_VGA_RED_DUT       : std_logic;
+    signal TB_VGA_GREEN_DUT     : std_logic;
+    signal TB_VGA_BLUE_DUT      : std_logic;
+    signal TB_VGA_HSYNC_DUT     : std_logic;
+    signal TB_VGA_VSYNC_DUT     : std_logic;
+
+    signal TB_VGA_RED_GOLDEN    : std_logic;
+    signal TB_VGA_GREEN_GOLDEN  : std_logic;
+    signal TB_VGA_BLUE_GOLDEN   : std_logic;
+    signal TB_VGA_HSYNC_GOLDEN  : std_logic;
+    signal TB_VGA_VSYNC_GOLDEN  : std_logic;
+    
+    signal TB_CLK               : std_logic;
+    signal TB_RESET             : std_logic;
     
     -- constants
     constant CLK_PERIOD : time := 10 ns; -- 100 Mhz CLK
@@ -57,19 +77,33 @@ begin
         wait;
     end process;  
 
-    DUT: VGA
+    DUT : VGA
         port map (
             REGX      => TB_REGX,
             REGY      => TB_REGY,
-            VGA_RED   => TB_VGA_RED,
-            VGA_GREEN => TB_VGA_GREEN,
-            VGA_BLUE  => TB_VGA_BLUE,
-            VGA_HSYNC => TB_VGA_HSYNC,
-            VGA_VSYNC => TB_VGA_VSYNC,
+            VGA_RED   => TB_VGA_RED_DUT,
+            VGA_GREEN => TB_VGA_GREEN_DUT,
+            VGA_BLUE  => TB_VGA_BLUE_DUT,
+            VGA_HSYNC => TB_VGA_HSYNC_DUT,
+            VGA_VSYNC => TB_VGA_VSYNC_DUT,
             CLK       => TB_CLK,
             RESET     => TB_RESET
         );
     
+    GOLDEN : VGA
+        port map (
+            REGX      => TB_REGX,
+            REGY      => TB_REGY,
+            VGA_RED   => TB_VGA_RED_GOLDEN,
+            VGA_GREEN => TB_VGA_GREEN_GOLDEN,
+            VGA_BLUE  => TB_VGA_BLUE_GOLDEN,
+            VGA_HSYNC => TB_VGA_HSYNC_GOLDEN,
+            VGA_VSYNC => TB_VGA_VSYNC_GOLDEN,
+            CLK       => TB_CLK,
+            RESET     => TB_RESET
+        );
+
+
     STIMULI_GEN : process
     begin
 
@@ -93,10 +127,29 @@ begin
                 TB_REGY <= std_logic_vector(to_unsigned(Y, 8));
                 wait for 10*CLK_PERIOD;
 
-                -- assert all VGA signals
-                -- TODO
+                -- assert all VGA signals of SW model = VHDL model
+                assert TB_VGA_RED_DUT = TB_VGA_RED_GOLDEN
+                    report "VGA_RED: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    severity error;
+                assert TB_VGA_GREEN_DUT = TB_VGA_GREEN_GOLDEN
+                    report "VGA_GREEN: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    severity error;
+                assert TB_VGA_BLUE_DUT = TB_VGA_BLUE_GOLDEN
+                    report "VGA_BLUE: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    severity error;
+                assert TB_VGA_HSYNC_DUT = TB_VGA_HSYNC_GOLDEN
+                    report "VGA_HSYNC: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    severity error;
+                assert TB_VGA_VSYNC_DUT = TB_VGA_VSYNC_GOLDEN
+                    report "VGA_VSYNC: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    severity error;
 
             end loop;
         end loop;
-
+        
+        assert FALSE
+            report "-----END OF SIMULATION-----"
+            severity failure;
+    
     end process STIMULI_GEN;
+end architecture TB_VGA_BODY;
