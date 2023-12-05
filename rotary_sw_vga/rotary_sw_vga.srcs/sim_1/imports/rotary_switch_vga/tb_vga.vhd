@@ -20,30 +20,47 @@ architecture TB_VGA_BODY of TB_VGA is
         );
     end component VGA;
     
+    -- helper function for asserts
+    FUNCTION to_char(value : STD_LOGIC) RETURN CHARACTER IS
+    BEGIN
+        CASE value IS
+            WHEN 'U' =>     RETURN 'U';
+            WHEN 'X' =>     RETURN 'X';
+            WHEN '0' =>     RETURN '0';
+            WHEN '1' =>     RETURN '1';
+            WHEN 'Z' =>     RETURN 'Z';
+            WHEN 'W' =>     RETURN 'W';
+            WHEN 'L' =>     RETURN 'L';
+            WHEN 'H' =>     RETURN 'H';
+            WHEN '-' =>     RETURN '-';
+            WHEN OTHERS =>  RETURN 'X';
+        END CASE;
+    END FUNCTION;
+
     -- to be switched out for the real device
-    for DUT : VGA use entity work.VGA(VGA_BODY) port map (
-        REGX        => REGX,
-        REGY        => REGY,
-        VGA_RED     => VGA_RED,
-        VGA_GREEN   => VGA_GREEN,
-        VGA_BLUE    => VGA_BLUE,
-        VGA_HSYNC   => VGA_HSYNC,
-        VGA_VSYNC   => VGA_VSYNC,
-        CLK         => CLK,
-        RESET       => RESET
-    );
+    -- for DUT : VGA use entity work.VGA(VGA_BODY) port map (
+    --     REGX        => REGX,
+    --     REGY        => REGY,
+    --     VGA_RED     => VGA_RED,
+    --     VGA_GREEN   => VGA_GREEN,
+    --     VGA_BLUE    => VGA_BLUE,
+    --     VGA_HSYNC   => VGA_HSYNC,
+    --     VGA_VSYNC   => VGA_VSYNC,
+    --     CLK         => CLK,
+    --     RESET       => RESET
+    -- );
     -- architecture SOFTWARE_MODEL contains the golden standard
-    for GOLDEN : VGA use entity work.VGA(SOFTWARE_MODEL) port map (
-        REGX        => REGX,
-        REGY        => REGY,
-        VGA_RED     => VGA_RED,
-        VGA_GREEN   => VGA_GREEN,
-        VGA_BLUE    => VGA_BLUE,
-        VGA_HSYNC   => VGA_HSYNC,
-        VGA_VSYNC   => VGA_VSYNC,
-        CLK         => CLK,
-        RESET       => RESET
-    );
+    -- for GOLDEN : VGA use entity work.VGA(SOFTWARE_MODEL) port map (
+    --     REGX        => REGX,
+    --     REGY        => REGY,
+    --     VGA_RED     => VGA_RED,
+    --     VGA_GREEN   => VGA_GREEN,
+    --     VGA_BLUE    => VGA_BLUE,
+    --     VGA_HSYNC   => VGA_HSYNC,
+    --     VGA_VSYNC   => VGA_VSYNC,
+    --     CLK         => CLK,
+    --     RESET       => RESET
+    -- );
 
     -- signals
     signal TB_REGX              : std_logic_vector (7 downto 0);
@@ -139,21 +156,21 @@ begin
                 TB_REGY <= std_logic_vector(to_unsigned(Y, 8));
                 wait for 10*CLK_PERIOD;
 
-                -- assert all VGA signals of SW model = VHDL model
+                -- assert all VGA signals of VHDL model = SW model
                 assert TB_VGA_RED_DUT = TB_VGA_RED_GOLDEN
-                    report "VGA_RED: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_RED_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_RED_GOLDEN))) 
+                    report "VGA_RED: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_RED_DUT) & "; Ocekavam: " & to_char(TB_VGA_RED_GOLDEN)
                     severity error;
                 assert TB_VGA_GREEN_DUT = TB_VGA_GREEN_GOLDEN
-                    report "VGA_GREEN: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_GREEN_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_GREEN_GOLDEN))) 
+                    report "VGA_GREEN: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_GREEN_DUT) & "; Ocekavam: " & to_char(TB_VGA_GREEN_GOLDEN) 
                     severity error;
                 assert TB_VGA_BLUE_DUT = TB_VGA_BLUE_GOLDEN
-                    report "VGA_BLUE: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_BLUE_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_BLUE_GOLDEN))) 
+                    report "VGA_BLUE: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_BLUE_DUT) & "; Ocekavam: " & to_char(TB_VGA_BLUE_GOLDEN) 
                     severity error;
                 assert TB_VGA_HSYNC_DUT = TB_VGA_HSYNC_GOLDEN
-                    report "VGA_HSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_HSYNC_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_HSYNC_GOLDEN))) 
+                    report "VGA_HSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_HSYNC_DUT) & "; Ocekavam: " & to_char(TB_VGA_HSYNC_GOLDEN) 
                     severity error;
                 assert TB_VGA_VSYNC_DUT = TB_VGA_VSYNC_GOLDEN
-                    report "VGA_VSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_VSYNC_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_VSYNC_GOLDEN))) 
+                    report "VGA_VSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_VSYNC_DUT) & "; Ocekavam: " & to_char(TB_VGA_VSYNC_GOLDEN) 
                     severity error;
 
             end loop;
