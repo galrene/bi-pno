@@ -141,19 +141,19 @@ begin
 
                 -- assert all VGA signals of SW model = VHDL model
                 assert TB_VGA_RED_DUT = TB_VGA_RED_GOLDEN
-                    report "VGA_RED: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    report "VGA_RED: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_RED_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_RED_GOLDEN))) 
                     severity error;
                 assert TB_VGA_GREEN_DUT = TB_VGA_GREEN_GOLDEN
-                    report "VGA_GREEN: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    report "VGA_GREEN: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_GREEN_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_GREEN_GOLDEN))) 
                     severity error;
                 assert TB_VGA_BLUE_DUT = TB_VGA_BLUE_GOLDEN
-                    report "VGA_BLUE: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    report "VGA_BLUE: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_BLUE_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_BLUE_GOLDEN))) 
                     severity error;
                 assert TB_VGA_HSYNC_DUT = TB_VGA_HSYNC_GOLDEN
-                    report "VGA_HSYNC: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    report "VGA_HSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_HSYNC_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_HSYNC_GOLDEN))) 
                     severity error;
                 assert TB_VGA_VSYNC_DUT = TB_VGA_VSYNC_GOLDEN
-                    report "VGA_VSYNC: Vstupy: " & integer'image(A) & " "&integer'image(B) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_OUTPUT_GOLDEN))) 
+                    report "VGA_VSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_VSYNC_DUT))) & "; Ocekavam: " & integer'image(TO_INTEGER(UNSIGNED(TB_VGA_VSYNC_GOLDEN))) 
                     severity error;
 
             end loop;
