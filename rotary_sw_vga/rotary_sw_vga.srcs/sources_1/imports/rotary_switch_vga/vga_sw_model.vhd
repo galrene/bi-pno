@@ -12,8 +12,8 @@ entitiy VGA is
     );
 end entitiy VGA;
 
-architecture SOFTWARE_MODEL of SERIAL_MULTIPLIER is
-    variable VGA_X                     := 0;
+architecture SOFTWARE_MODEL of VGA is
+    variable VGA_X                     : INTEGER := 0;
     variable VGA_Y                     := 0;
 
     signal   CLK_DIVIDER               : INTEGER := 0;
@@ -105,4 +105,6 @@ begin
        VGA_VSYNC = '0';
        wait for VSYNC_PULSE_WIDTH * PIXEL_PERIOD;
        VGA_VSYNC = '1';
-    end if;    
+    end if;
+    end process PIXEL_GEN;
+end architecture SOFTWARE_MODEL;

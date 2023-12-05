@@ -1,7 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use STD.TEXTIO.all;                                        -- for the FILE data type and related operations
 
 entity TB_VGA is
 end entity TB_VGA;
@@ -20,6 +19,19 @@ architecture TB_VGA_BODY of TB_VGA is
            RESET     : in  std_logic
         );
     end component VGA;
+    
+    -- to be switched out for the real device
+    for DUT : VGA use entity work.VGA(VGA_BODY) port map (
+        REGX        => REGX,
+        REGY        => REGY,
+        VGA_RED     => VGA_RED,
+        VGA_GREEN   => VGA_GREEN,
+        VGA_BLUE    => VGA_BLUE,
+        VGA_HSYNC   => VGA_HSYNC,
+        VGA_VSYNC   => VGA_VSYNC,
+        CLK         => CLK,
+        RESET       => RESET
+    );
     -- architecture SOFTWARE_MODEL contains the golden standard
     for GOLDEN : VGA use entity work.VGA(SOFTWARE_MODEL) port map (
         REGX        => REGX,
@@ -75,7 +87,7 @@ begin
         wait for 30 ns;
         TB_RESET <= '0';
         wait;
-    end process;  
+    end process RESET_GEN;
 
     DUT : VGA
         port map (
