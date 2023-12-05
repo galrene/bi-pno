@@ -147,32 +147,39 @@ begin
             severity note;
         
         -- generate input values for VGA
-        for X in 0 to 255 loop
-            for Y in 0 to 255 loop
+        for Y in 0 to 255 loop
+            for X in 0 to 255 loop
                 wait until TB_CLK = '1';
                 
                 TB_REGX <= std_logic_vector(to_unsigned(X, 8));
-                wait for 30 ns;
+                wait for CLK_PERIOD*4*2;
                 TB_REGY <= std_logic_vector(to_unsigned(Y, 8));
-                wait for 10*CLK_PERIOD;
+                wait for 800*CLK_PERIOD*4; -- vga_screen_width*vga_clk_period
 
                 -- assert all VGA signals of VHDL model = SW model
                 assert TB_VGA_RED_DUT = TB_VGA_RED_GOLDEN
-                    report "VGA_RED: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_RED_DUT) & "; Ocekavam: " & to_char(TB_VGA_RED_GOLDEN)
+                    report "VGA_RED: Vstupy: " & integer'image(X) & " "&integer'image(Y) 
+                    & ", Vystup: " & to_char(TB_VGA_RED_DUT) & "; Ocekavam: " & to_char(TB_VGA_RED_GOLDEN)
                     severity error;
                 assert TB_VGA_GREEN_DUT = TB_VGA_GREEN_GOLDEN
-                    report "VGA_GREEN: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_GREEN_DUT) & "; Ocekavam: " & to_char(TB_VGA_GREEN_GOLDEN) 
+                    report "VGA_GREEN: Vstupy: " & integer'image(X) & " "&integer'image(Y) 
+                    & ", Vystup: " & to_char(TB_VGA_GREEN_DUT) & "; Ocekavam: " & to_char(TB_VGA_GREEN_GOLDEN) 
                     severity error;
                 assert TB_VGA_BLUE_DUT = TB_VGA_BLUE_GOLDEN
-                    report "VGA_BLUE: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_BLUE_DUT) & "; Ocekavam: " & to_char(TB_VGA_BLUE_GOLDEN) 
+                    report "VGA_BLUE: Vstupy: " & integer'image(X) & " "&integer'image(Y) 
+                    & ", Vystup: " & to_char(TB_VGA_BLUE_DUT) & "; Ocekavam: " & to_char(TB_VGA_BLUE_GOLDEN) 
                     severity error;
                 assert TB_VGA_HSYNC_DUT = TB_VGA_HSYNC_GOLDEN
-                    report "VGA_HSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_HSYNC_DUT) & "; Ocekavam: " & to_char(TB_VGA_HSYNC_GOLDEN) 
+                    report "VGA_HSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) 
+                    & ", Vystup: " & to_char(TB_VGA_HSYNC_DUT) & "; Ocekavam: " & to_char(TB_VGA_HSYNC_GOLDEN) 
                     severity error;
                 assert TB_VGA_VSYNC_DUT = TB_VGA_VSYNC_GOLDEN
-                    report "VGA_VSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) & ", Vystup: " & to_char(TB_VGA_VSYNC_DUT) & "; Ocekavam: " & to_char(TB_VGA_VSYNC_GOLDEN) 
+                    report "VGA_VSYNC: Vstupy: " & integer'image(X) & " "&integer'image(Y) 
+                    & ", Vystup: " & to_char(TB_VGA_VSYNC_DUT) & "; Ocekavam: " & to_char(TB_VGA_VSYNC_GOLDEN) 
                     severity error;
+                
 
+                -- wait for CLK_PERIOD * 
             end loop;
         end loop;
         
