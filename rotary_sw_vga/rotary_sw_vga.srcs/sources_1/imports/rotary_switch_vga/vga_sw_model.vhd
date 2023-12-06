@@ -29,22 +29,27 @@ architecture SOFTWARE_MODEL of VGA is
     constant VSYNC_PULSE_WIDTH         : NATURAL := 2;
 begin
     --NOTE: H_SYNC and V_SYNC are active on 0
+    -- TODO:
+    -- HSYNC vyzera ze trva o takt dlhsie ako by mal
+    -- VSYNC doesn't work
+    -- vga_colors work only until X=30?
     PIXEL_GEN : process
         variable VGA_X                     : NATURAL := 0;
         variable VGA_Y                     : NATURAL := 0;
     begin
         
+        -- every 2 clock cycles, advance the local counters - simulates 25MHz clock
+        -- vga_clk = '0'
+        -- rising edge
+        for i in 0 to 1 loop
+            wait until CLK = '1' and CLK'event;
+        end loop;
+
         VGA_RED   <= '0';
         VGA_GREEN <= '0';
         VGA_BLUE  <= '0';
         VGA_HSYNC <= '1';
         VGA_VSYNC <= '1';
-
-        -- every 4 clock cycles, advance the local counters - simulates 25MHz clock
-        -- vga_clk = '0'
-        for i in 0 to 1 loop
-            wait until CLK = '1' and CLK'event;
-        end loop;
 
         if VGA_X = UNSIGNED(REGX) + H_BACK_PORCH + HSYNC_PULSE_WIDTH then
             -- when at the given X coord, generate a white pixel
