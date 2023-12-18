@@ -31,13 +31,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity ROTARY_DEC is
---  Port ( );
-end ROTARY_DEC;
+entity ROTARY is
+    port (
+        ROTARY : in  std_logic_vector (2 downto 0);   -- rotary button  (left, right, push)
+        REGX   : out std_logic_vector (7 downto 0);   -- X
+        REGY   : out std_logic_vector (7 downto 0);   -- Y
+        CLK    : in  std_logic;                       -- 100 MHz
+        RESET  : in  std_logic
+    );
+end ROTARY;
 
 architecture ROTARY_DEC_BODY of ROTARY_DEC is
 
 begin
 
+    
 
 end ROTARY_DEC_BODY;
