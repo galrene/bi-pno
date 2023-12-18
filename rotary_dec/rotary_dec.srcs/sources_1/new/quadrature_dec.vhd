@@ -6,7 +6,7 @@ entity QUADRATURE_DEC is
         A, B, CLK, RESET : in STD_LOGIC;
         INC, EN          : out STD_LOGIC -- increment/decrement, enable counting
     );
-end QUADRATURE_DEC;
+end entity QUADRATURE_DEC;
 
 architecture QUADRATURE_DEC_BODY of QUADRATURE_DEC is
     signal A_12   : STD_LOGIC; -- wire between reg_a_1 and reg_a_2
