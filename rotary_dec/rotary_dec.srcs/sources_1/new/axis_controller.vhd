@@ -5,7 +5,7 @@ entity AXIS_CONTROLLER is
         BUT, CLK        : in  STD_LOGIC; 
         SEL_X           : out STD_LOGIC;
         RESET           : in  STD_LOGIC; -- externally activated reset
-        RESET_DATAPATH  : out STD_LOGIC  -- internal reset
+        RST_DATAPATH    : out STD_LOGIC  -- internal reset
     );
 end entity AXIS_CONTROLLER;
 
@@ -15,11 +15,11 @@ architecture AXIS_CONTROLLER_BODY of AXIS_CONTROLLER is
 begin
     OUTPUTS : process ( STATE )
     begin
-        RESET_DATAPATH <= '0';
+        RST_DATAPATH   <= '0';
         SEL_X          <= '0';
         case STATE is
             when X =>       SEL_X          <= '1';
-                            RESET_DATAPATH <= '1';
+                            RST_DATAPATH   <= '1';
             when DB_Y =>    NULL;
             when Y =>       NULL;
             when DB_X =>    SEL_X          <= '1';
