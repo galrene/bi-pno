@@ -1,24 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 12/18/2023 01:24:00 AM
--- Design Name: 
--- Module Name: ROTARY_DEC - ROTARY_DEC_BODY
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
@@ -39,12 +18,52 @@ entity ROTARY is
         CLK    : in  std_logic;                       -- 100 MHz
         RESET  : in  std_logic
     );
-end ROTARY;
+end entity ROTARY;
 
-architecture ROTARY_DEC_BODY of ROTARY_DEC is
+architecture ROTARY_BODY of ROTARY is
 
+    component DATAPATH is
+        port (
+            ROTARY    : in  STD_LOGIC_VECTOR ( 2 downto 0 );
+            X         : in  STD_LOGIC; -- x := select reg x, not x := select reg y
+            BTN       : out STD_LOGIC;
+            REGX      : out STD_LOGIC_VECTOR ( 7 downto 0 );
+            REGY      : out STD_LOGIC_VECTOR ( 7 downto 0 );
+            CLK       : in  STD_LOGIC;
+            RST_DP    : in  STD_LOGIC
+        );
+    end component DATAPATH;
+    
+    component CONTROLLER is
+        port (
+            BUT, CLK      : in  STD_LOGIC; 
+            SEL_X         : out STD_LOGIC;
+            RESET         : in  STD_LOGIC; -- externally activated reset
+            RST_DP        : out STD_LOGIC  -- internal reset
+        );
+    end component CONTROLLER;
+    
+    signal SEL_X          : STD_LOGIC;
+    signal RESET_DATAPATH : STD_LOGIC;
+    signal BUTTON         : STD_LOGIC;
 begin
 
+    DATA_INST : DATAPATH port map (
+        ROTARY => ROTARY,
+        X      => SEL_X,
+        BTN    => BUTTON,
+        REGX   => REGX, 
+        REGY   => REGY,
+        CLK    => CLK,
+        RST_DP => RESET_DATAPATH
+    );
     
+    CNTL_INST : CONTROLLER port map (
+        BUT    => BUTTON,
+        CLK    => CLK,
+        SEL_X  => SEL_X,
+        RESET  => RESET,
+        RST_DP => RESET_DATAPATH
+    );
 
-end ROTARY_DEC_BODY;
+end architecture ROTARY_BODY;
