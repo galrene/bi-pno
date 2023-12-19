@@ -48,7 +48,6 @@ architecture DATAPATH_BODY of DATAPATH is
     signal A_DB            : STD_LOGIC;
     signal B_DB            : STD_LOGIC;
     signal BTN_SIG         : STD_LOGIC;
-    -- control signals
     signal INCREMENT       : STD_LOGIC;
     signal ENABLE_COUNTING : STD_LOGIC;
 begin
