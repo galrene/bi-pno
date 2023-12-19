@@ -5,7 +5,7 @@ entity CONTROLLER is
         BUT, CLK        : in  STD_LOGIC; 
         SEL_X           : out STD_LOGIC;
         RESET           : in  STD_LOGIC; -- externally activated reset
-        RST_DATAPATH    : out STD_LOGIC  -- internal reset
+        RST_DP          : out STD_LOGIC  -- internal reset
     );
 end entity CONTROLLER;
 
@@ -15,14 +15,14 @@ architecture CONTROLLER_BODY of CONTROLLER is
 begin
     OUTPUTS : process ( STATE )
     begin
-        RST_DATAPATH   <= '0';
-        SEL_X          <= '0';
+        RST_DP   <= '0';
+        SEL_X    <= '0';
         case STATE is
-            when X =>       SEL_X          <= '1';
-                            RST_DATAPATH   <= '1';
+            when X =>       SEL_X    <= '1';
+                            RST_DP   <= '1';
             when DB_Y =>    NULL;
             when Y =>       NULL;
-            when DB_X =>    SEL_X          <= '1';
+            when DB_X =>    SEL_X    <= '1';
         end case;
     end process OUTPUTS;
 
