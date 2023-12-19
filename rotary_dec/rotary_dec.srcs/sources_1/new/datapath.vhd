@@ -1,6 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use IEEE.NUMERIC_STD.ALL;
 entity DATAPATH is
     port (
         ROTARY    : in  STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -8,7 +8,7 @@ entity DATAPATH is
         REGX      : out STD_LOGIC_VECTOR ( 7 downto 0 );
         REGY      : out STD_LOGIC_VECTOR ( 7 downto 0 );
         CLK       : in  STD_LOGIC;
-        RST_DP    : in  STD_LOGIC;
+        RST_DP    : in  STD_LOGIC
     );
 end DATAPATH;
 
@@ -33,13 +33,13 @@ begin
     begin
         if CLK = '1' and CLK'EVENT then
             if RST_DP = '1' then
-                REG_X_SIG <= '0';
+                REGX_SIG <= ( others => '0');
             elsif ENABLE_COUNTING = '1' and X = '1' then
             -- at posedge, when X register is selected and counting is enabled
                 if INCREMENT = '1' then
-                    REG_X_SIG =+ 1;
+                    REGX_SIG <= STD_LOGIC_VECTOR(UNSIGNED(REGX_SIG) + 1);
                 else
-                    REG_X_SIG -= 1;
+                    REGX_SIG <= STD_LOGIC_VECTOR(UNSIGNED(REGX_SIG) - 1);
                 end if;
             end if;
         end if;
@@ -49,13 +49,13 @@ begin
     begin
         if CLK = '1' and CLK'EVENT then
             if RST_DP = '1' then
-                REG_Y_SIG <= '0';
+                REGY_SIG <= (others => '0');
             elsif ENABLE_COUNTING = '1' and X = '0' then
             -- at posedge, when X register is selected and counting is enabled
                 if INCREMENT = '1' then
-                    REG_Y_SIG =+ 1;
+                    REGY_SIG <= STD_LOGIC_VECTOR(UNSIGNED(REGY_SIG) + 1);
                 else
-                    REG_Y_SIG -= 1;
+                    REGY_SIG <= STD_LOGIC_VECTOR(UNSIGNED(REGY_SIG) - 1);
                 end if;
             end if;
         end if;
@@ -70,6 +70,6 @@ begin
         RESET => RST_DP,
         INC   => INCREMENT,
         EN    => ENABLE_COUNTING
-    )
+    );
 
 end architecture DATAPATH_BODY;
