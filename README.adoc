@@ -63,8 +63,8 @@ Stlačením switchu sa prepína na ovládanie druhého registru.
 VGA časť predpokladá, že prvý register určuje horizontálnu súradnicu a druhý vertikálnu súradnicu miesta,
 kde má vykreslovať stred kríža. Dohodou bolo, že sa bude vykreslovať iba na 255x255 pixelov obrazovky.
 
-Úspešne odovzdaná a obodovaná časť bola iba VGA testbench. V rozrobenej implementácii rotary decoderu je potrebné
-odstrániť quadrature decoder a nahradiť ho automatom, ktorý rozhoduje o smere rotácie.
+*Úspešne odovzdaná a obodovaná časť bola iba VGA testbench. V rozrobenej implementácii rotary decoderu je potrebné
+odstrániť quadrature decoder a nahradiť ho automatom, ktorý rozhoduje o smere rotácie.*
 
 == Datapath
 
