@@ -68,13 +68,13 @@ odstrániť quadrature decoder a nahradiť ho automatom, ktorý rozhoduje o smer
 
 == Datapath
 
-image:.rotary_dec/datapath.png[width="500"]
+image::.rotary_dec/datapath.png[width="500"]
 
 == Controller  diagram
-image:.rotary_dec/controller.png[width="500"]
+image::.rotary_dec/controller.png[width="500"]
 
 == Quadrature decoder - nesprávne
-image:.rotary_dec/QuadratureDecoder.png[width="500"]
+image::.rotary_dec/QuadratureDecoder.png[width="500"]
 
 === Popis souborů
 
