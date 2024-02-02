@@ -70,7 +70,7 @@ odstrániť quadrature decoder a nahradiť ho automatom, ktorý rozhoduje o smer
 
 == Datapath
 
-image::./rotary_dec/datapath.png[width="500"]
+image::./rotary_dec/datapath.png[width="600"]
 
 == Controller  diagram
 image::./rotary_dec/controller.png[width="500"]
