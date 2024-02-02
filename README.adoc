@@ -40,3 +40,54 @@ link:./hw01_cyc_shift_galrene.zip[Projekt1.1-Cyklicky_posuv.zip]
 | link:./cyc_shift_2/constrs.xdc[constrs.xdc]                     | přiřazení pinů
 | link:./cyc_shift_2/tb_gen.py[tb_gen.py]               | generátor vstupů a výstupů (pro testbench)
 |====
+
+
+= Projekt 2: VGA a rotary switch
+
+== Rozdelenie rolí
+
+[options="autowidth"]
+|====
+| 1. tím | Rotary Switch design | VGA testbench | René Gál
+| 2. tím | VGA design | Rotary Switch testbench | Matěj Melichna
+|====
+
+== Implementačná platforma
+
+Prípravok Digilent Basys 3
+
+== Popis chování
+
+Otáčaním rotary switchu doprava sa inkrementuje hodnota registru, doľava sa dekrementuje.
+Stlačením switchu sa prepína na ovládanie druhého registru.
+VGA časť predpokladá, že prvý register určuje horizontálnu súradnicu a druhý vertikálnu súradnicu miesta,
+kde má vykreslovať stred kríža. Dohodou bolo, že sa bude vykreslovať iba na 255x255 pixelov obrazovky.
+
+Úspešne odovzdaná a obodovaná časť bola iba VGA testbench. V rozrobenej implementácii rotary decoderu je potrebné
+odstrániť quadrature decoder a nahradiť ho automatom, ktorý rozhoduje o smere rotácie.
+
+== Datapath
+
+image:.rotary_dec/datapath.png[width="500"]
+
+== Controller  diagram
+image:.rotary_dec/controller.png[width="500"]
+
+== Quadrature decoder - nesprávne
+image:.rotary_dec/QuadratureDecoder.png[width="500"]
+
+=== Popis souborů
+
+
+[options="autowidth"]
+|====
+^h|  Soubor                                                                ^h|  Popis
+| link:./rotary_dec/rotary_dec.srcs/sources_1/new/datapath.vhd[datapath.vhd]                          | datová cesta
+| link:./rotary_dec/rotary_dec.srcs/sources_1/new/controller.vhd[controller.vhd]                      | řídící jednotka
+| link:./rotary_dec/rotary_dec.srcs/sources_1/new/Debouncer.vhd[debouncer.vhd]                  | debouncer
+| link:./rotary_dec/rotary_dec.srcs/sources_1/new/rotary_dec.vhd[rotary_dec.vhd]        | top-level entita (pro verifikaci)
+| link:./rotary_dec/rotary_dec.srcs/sources_1/new/quadrature_dec.vhd.vhd[quadrature_dec.vhd]        | kvadraturny dekoder - nespravne, treba implementovat automatom
+| link:./rotary_dec/rotary_dec.srcs/sources_1/new/synchronizer.vhd[synchronizer.vhd] | dva D klopne obvody pre synchronizaciu vonkajsich vstupov na hodinovy signal
+| link:./rotary_sw_vga/rotary_sw_vga.srcs/sources_1/imports/rotary_switch_vga/vga_sw_model.vhd[vga_sw_model.vhd] | softvérový model VGA
+| link:./rotary_sw_vga/rotary_sw_vga.srcs/sim_1/imports/rotary_switch_vga/tb_vga.vhd[tb_vga.vhd] | testbench pre VGA
+|====
